@@ -20,7 +20,6 @@ status:
 
 
 # Run with following steps:
-# The web-app will run in one pod, other pods is a sidecar going to generate load for your application. 
 #1> make build
 #2> make ns
 #3> make create_key
