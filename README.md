@@ -21,7 +21,7 @@ apiVersion: v1
 data:
   APPDYNAMICS_AGENT_APPLICATION_NAME: "<agent-application-name>"
   APPDYNAMICS_AGENT_REUSE_NODE_NAME: "true"
-  APPDYNAMICS_AGENT_ACCOUNT_NAME: "<agent-account-name>"
+  APPDYNAMICS_AGENT_ACCOUNT_NAME: "<controller-account-name>"
   APPDYNAMICS_CONTROLLER_HOST_NAME: "<controller-host-name>"
   APPDYNAMICS_CONTROLLER_PORT: "<controller-port>"
   APPDYNAMICS_CONTROLLER_SSL_ENABLED: "<true|false>"
