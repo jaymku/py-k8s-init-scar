@@ -1,28 +1,22 @@
 # py-k8s-init-scar
 python web app using init method to instrument the app
 
-== Build & Run
+## Build & Run
 
-. Build all images
-+
-[source, sh]
-----
+### Build all images
+```sh
 docker build --tag python-demo-web-api web-api
 docker build --tag python-demo-load load
-----
+```
 
 
-. Create kubernetes namespace
-+
-[source, sh]
-----
+### Create kubernetes namespace
+```sh
 kubectl create namespace dev
-----
+```
 
-. Update the Config in file kube/appd-python-config.yaml_
-+ 
-[source, sh]
-----
+### Update the Config in file kube/appd-python-config.yaml_
+```sh
 apiVersion: v1
 data:
   APPDYNAMICS_AGENT_APPLICATION_NAME: "<agent-application-name>"
@@ -34,21 +28,14 @@ data:
 kind: ConfigMap
 metadata:
   name: appd-python-config
-----
-
-
-. Create Access Key Secret
-+
-[source, sh]
-----
+```
+### Create Access Key Secret
+```sh
 kdev create secret generic \
     appd-agent-secret \
     --from-literal=access-key=<access key>
-----
-
-. Run environment
-+
-[source, sh]
-----
+```
+### Run environment
+```sh
 kubectl -n dev apply -f kube
-----
+```
