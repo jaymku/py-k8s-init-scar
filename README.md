@@ -15,7 +15,7 @@ docker build --tag python-demo-load load
 kubectl create namespace dev
 ```
 
-### Update the Config in file kube/appd-python-config.yaml_
+### Update the Config in file kube/appd-python-config.yaml
 ```sh
 apiVersion: v1
 data:
