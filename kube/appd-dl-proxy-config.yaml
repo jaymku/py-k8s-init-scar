@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  APPDYNAMICS_DEBUG_LOG: "on"
+  APPDYNAMICS_LOGGING_LEVEL: "debug"
+  APPDYNAMICS_TCP_COMM_HOST: "0.0.0.0"
+  APPDYNAMICS_TCP_COMM_PORT: "9091"
+  APPDYNAMICS_TCP_PORT_RANGE: "10000-10100"
+kind: ConfigMap
+metadata:
+  name: appd-dl-proxy-config 

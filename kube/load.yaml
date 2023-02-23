@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-demo-load
+spec:
+  selector:
+    matchLabels:
+      app: python-demo-load
+  template:
+    metadata:
+      labels:
+        app: python-demo-load
+    spec:
+      containers:
+        - name: python-demo-load
+          image: python-demo-load
+          imagePullPolicy: IfNotPresent

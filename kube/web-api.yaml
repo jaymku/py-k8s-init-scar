@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-demo-web-api
+spec:
+  selector:
+    matchLabels:
+      app: python-demo-web-api
+  template:
+    metadata:
+      labels:
+        app: python-demo-web-api
+    spec:
+      initContainers:
+        - name: appd-python-init
+          command:
+            - cp
+            - -r
+            - /opt/appdynamics/.
+            - /opt/temp
+          image: docker.io/appdynamics/python-agent-init:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /opt/temp
+              name: appd-python-init
+      containers:
+        - name: python-demo-web-api
+          image: python-demo-web-api
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh"]
+          args: ["-c", "/opt/appdynamics-python/run-with-agent.sh"]
+          ports:
+            - containerPort: 5000
+          env:
+            - name: APP_ENTRY_POINT
+              value: "python3 app.py"
+            - name: APPDYNAMICS_AGENT_VERSION
+              # Use latest version from https://pypi.org/project/appdynamics/#history
+              value: 23.2.0.5678
+            - name: APPDYNAMICS_AGENT_TIER_NAME
+              value: python-demo-web-api
+            - name: APPDYNAMICS_AGENT_REUSE_NODE_NAME_PREFIX
+              value: python-demo-web-api
+            - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: access-key
+                  name: appd-agent-secret
+          envFrom:
+            - configMapRef:
+                name: appd-python-config
+          volumeMounts:
+            - mountPath: /opt/appdynamics-python
+              name: appd-python-init
+        - name: proxy
+          image: appdynamics/dl-proxy:22.1.1
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: appd-dl-proxy-config
+          ports:
+            - containerPort: 9091
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 900M
+            requests:
+              cpu: 400m
+              memory: 600M
+      volumes:
+        - name: appd-python-init
+          emptyDir: {}
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-demo-web-api
+spec:
+  selector:
+    app: python-demo-web-api
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
