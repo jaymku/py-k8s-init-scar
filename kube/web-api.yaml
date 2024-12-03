@@ -33,10 +33,10 @@ spec:
             - containerPort: 5000
           env:
             - name: APP_ENTRY_POINT
-              value: "python3 app.py"
-            - name: APPDYNAMICS_AGENT_VERSION
+              value: "--use-manual-proxy python3 app.py"
+            #- name: APPDYNAMICS_AGENT_VERSION
               # Use latest version from https://pypi.org/project/appdynamics/#history
-              value: 23.2.0.5678
+            #  value: 23.2.0.5678
             - name: APPDYNAMICS_AGENT_TIER_NAME
               value: python-demo-web-api
             - name: APPDYNAMICS_AGENT_REUSE_NODE_NAME_PREFIX
@@ -53,7 +53,7 @@ spec:
             - mountPath: /opt/appdynamics-python
               name: appd-python-init
         - name: proxy
-          image: appdynamics/dl-proxy:22.1.1
+          image: appdynamics/dl-proxy:23.5.1
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
